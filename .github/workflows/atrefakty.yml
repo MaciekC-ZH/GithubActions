@@ -1,0 +1,30 @@
+name: Artefakt demo
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+      - name: Tworzenie pliku
+        run: |
+          echo "Wersja produkcyjna gotowa" >> release.txt
+      - name: Wysłanie paczki
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: release.txt
+  verify-build:
+    runs-on: ubuntu-latest
+    needs: create-build
+    steps:
+      - name: Pobranie paczki
+        uses: actions/download-artifact@v4
+        with:
+          name: release-package
+      - name: Wyświetlenie
+        run: |
+          cat release.txt
