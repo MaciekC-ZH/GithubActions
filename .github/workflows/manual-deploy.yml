@@ -1,0 +1,20 @@
+name: Workflow dispatch
+
+on:
+  workflow_dispatch: 
+    inputs:
+      environment:
+        description: "Wybierz środowisko"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - "dev"
+          - "prod"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Komunikat
+        run: |
+          echo "Wdrażam na: ${{inputs.environment}}"

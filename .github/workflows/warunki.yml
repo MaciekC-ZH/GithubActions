@@ -1,0 +1,24 @@
+name: Warunki i statusy
+on:
+  push:
+    branches: 
+      - main
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+
+      - name: Uruchomienie testów
+        run: exit 1
+
+      - name: Powiadomienie o awarii
+        if: failure()
+        run: |
+          echo "Alarm: Testy zakonczyly sie niepowodzeniem"
+      
+      - name: Sprzatanie
+        if: always()
+        run: |
+          echo "Zwalnianie zasobow ..."
