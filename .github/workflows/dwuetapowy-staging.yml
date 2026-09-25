@@ -1,0 +1,21 @@
+name: Deploy pipeline
+on:
+  push:
+    branches: 
+      - main
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Komunikat
+        run: |
+          echo "Wdrazanie na srodowisko Staging ..."
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment: production
+    steps:
+      - name: Komunikat
+        run: |
+          echo "Wdrazanie na srodowisko produkcyjne ..."
