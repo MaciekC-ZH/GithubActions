@@ -1,0 +1,15 @@
+name: Reusable Lint
+
+on:
+  workflow_call:
+    inputs:
+      environment_name:
+        required: true
+        type: string
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Komunikat
+        run: |
+          echo "Uruchamiam lintera dla srodowsika: ${{ inputs.environment_name }}"
