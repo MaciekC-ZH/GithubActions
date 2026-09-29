@@ -1,0 +1,11 @@
+# jobs:
+#   validate:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Pobranie repozytorium
+#         uses: actions/checkout@v4
+
+#       - name: Sprawdzenie formatu Terraforma
+#         uses: ./.github/actions/terraform-checker
+#         with:
+#           tf-version: "1.8.0"
