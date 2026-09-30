@@ -1,0 +1,19 @@
+name: Failure Handling Pipeline
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Polecenie z bledem
+        run: |
+          echo "Wykryto awarie podczas kompilacji" && exit 1
+      - name: Tylko w razie bledu
+        if: failure()
+        run: |
+          echo "Alert! Niepowodenie"
+      - name: Zawsze
+        if: always()
+        run: |
+          echo "Czyszczenie zasobów"

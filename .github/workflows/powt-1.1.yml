@@ -1,0 +1,34 @@
+name: Python Matrix CI
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        pyth_ver: ["3.10", "3.11"]
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+      - name: Konfig interpretera
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.pyth_ver }}
+      - name: Testy
+        run: |
+          echo "Uruchamiam testy na Python ${{ matrix.pyth_ver }}"
+
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tworzy plik raportu
+        run: |
+          echo "Wszystkie testy macierzy zakończone sukcesem" > raport.txt
+      - name: Wyslij raport
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-z-testow
+          path: raport.txt
