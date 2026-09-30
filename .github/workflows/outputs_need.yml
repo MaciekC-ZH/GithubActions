@@ -1,0 +1,21 @@
+name: Outputs
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      package_tag: ${{ steps.generate_tag.outputs.my_tag }}
+    steps:
+      - name: Generowanie
+        id: generate_tag
+        run: echo "my_tag=v2.5.0" >> "$GITHUB_OUTPUT"
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Komunikat
+        run: |
+          echo "Publikacja wersji: ${{ needs.build.outputs.package_tag }}"
