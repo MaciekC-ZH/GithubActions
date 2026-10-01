@@ -1,0 +1,20 @@
+name: "Setup Python Environment"
+description: "Instaluje Pythona z pipem"
+
+inputs:
+  python-version:
+    description: "Wersja Pythona do zainstalowania"
+    required: false
+    default: "3.11"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Wyswietlenie wersji Pythona
+      shell: bash
+      run: python --version

@@ -1,0 +1,23 @@
+name: Release flow
+on:
+  workflow_dispatch:
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_short: ${{ steps.get_sha.outputs.sha_output }}
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+      - name: Wyciagniecia sha commita
+        id: get_sha
+        run: echo "sha_output=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: prepare
+    environment: staging
+    steps:
+      - name: Wyswietlenie wdrozonej wersji
+        run: |
+          echo "Wdrazam na staging wersje oparte na commicie: ${{ needs.prepare.outputs.commit_short }}"
