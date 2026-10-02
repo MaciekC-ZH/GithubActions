@@ -1,0 +1,56 @@
+name: Enterprise Release Flow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  matrix-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+      - name: Setup Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Symulacja testów
+        run: |
+          echo "Testy na wersji ${{ matrix.python-version }} powiodły się."
+
+  build-artifact:
+    runs-on: ubuntu-latest
+    needs: matrix-tests
+    steps:
+      - name: Generowanie pliku pakietu
+        run: |
+          echo "Pakiet produkcyjny v1.0.0" > app.tar.gz
+      - name: Wyslanie artefaktu
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-package
+          path: app.tar.gz
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: build-artifact
+    if: github.event_name == 'push'
+    environment: production
+    steps:
+      - name: Pobranie artefaktu
+        uses: actions/download-artifact@v4
+        with:
+          name: production-package
+      - name: Symulacja wdrożenia
+        run: |
+          ls -la
+          echo "Wdrazanie paczki app.tar.gz na serwer produkcyjny ..."
+      - name: Powiadomienie if error
+        if: failure()
+        run: |
+          echo "Awaria podczas wdrazania na produkcje!"
