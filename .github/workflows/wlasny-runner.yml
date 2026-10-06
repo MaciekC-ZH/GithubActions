@@ -1,0 +1,23 @@
+name: Internal Private Deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, internal-infra]
+    environment: production
+    steps:
+      - name: Pobranie repo
+        uses: actions/checkout@v4
+      - name: Sprawdzania środowiska lokalnego runnera
+        run: |
+          uname -a
+          hostname
+      - name: Symulacja wdrożenia do sieci prywatnej
+        run: |
+          echo "Laczenie z wewnetrzna baza VPC i uruchamianie migracji ..."
+      - name: Alert
+        if: failure()
+        run: |
+          echo "ALERT! Awaria wdrozenia na wlasnym runnerze!"
